@@ -10,6 +10,8 @@ class CPU:
         self.ram = [0] * 256
         self.register = [0] * 8
         self.pc = 0
+        self.ir = 0
+        self.running = True
 
 
     def load(self):
@@ -70,4 +72,13 @@ class CPU:
 
     def run(self):
         """Run the CPU."""
-        pass
+        while self.running:
+            # read memory address stored in register PC and store as ir
+            ir = self.ram_read(self.pc)
+            # read bytes at PC + 1 & PC +2
+            if ir == LDI:
+                operand_a = self.ram_read(self.pc + 1)
+                operand_b = self.ram_read(self.pc + 2)
+                # update to point to next instruction
+                self.ram_write(operand_a, operand_b)
+                self.pc += 3
