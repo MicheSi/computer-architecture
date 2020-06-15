@@ -12,6 +12,9 @@ class CPU:
         self.pc = 0
         self.ir = 0
         self.running = True
+        self.LDI = 0b10000010
+        self.PRN = 0b01000111
+        self.HLT = 0b00000001
 
 
     def load(self):
@@ -82,3 +85,7 @@ class CPU:
                 # update to point to next instruction
                 self.ram_write(operand_a, operand_b)
                 self.pc += 3
+            # exit loop if HLT
+            elif ir = HLT:
+                self.running == False
+                self.pc += 1
