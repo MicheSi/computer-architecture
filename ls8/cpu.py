@@ -10,7 +10,6 @@ class CPU:
         self.ram = [0] * 256
         self.register = [0] * 8
         self.pc = 0
-        self.ir = 0
         self.running = True
         self.LDI = 0b10000010
         self.PRN = 0b01000111
@@ -79,22 +78,18 @@ class CPU:
             # read memory address stored in register PC and store as ir
             ir = self.ram_read(self.pc)
             # read bytes at PC + 1 & PC +2
-            if ir == LDI:
+            if ir == self.LDI:
                 operand_a = self.ram_read(self.pc + 1)
                 operand_b = self.ram_read(self.pc + 2)
                 # update to point to next instruction
                 self.ram_write(operand_a, operand_b)
                 self.pc += 3
             # exit loop if HLT
-            elif ir = HLT:
+            elif ir == self.HLT:
                 self.running == False
                 self.pc += 1
             # print numeric value stored in given register
-            elif ir == PRN:
+            elif ir == self.PRN:
                 operand_a = self.ram_read(self.pc + 1)
-                print(operand_a)
+                print(self.ram_read(operand_a))
                 self.pc += 2
-            # error
-            else:
-                print(f'Cannot run')
-                running = False
