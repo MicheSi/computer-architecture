@@ -10,7 +10,7 @@ class CPU:
         self.ram = [0] * 256
         self.register = [0] * 8
         self.pc = 0
-        
+
 
     def load(self):
         """Load a program into memory."""
@@ -33,6 +33,11 @@ class CPU:
             self.ram[address] = instruction
             address += 1
 
+    def ram_read(self, MAR): # Memory Address Register - contains address being written or read
+        return self.ram[MAR]
+
+    def ram_write(self, MAR, MDR): #Memory Data Register - data that was read or the data to write
+        self.ram[MAR] = MDR
 
     def alu(self, op, reg_a, reg_b):
         """ALU operations."""
