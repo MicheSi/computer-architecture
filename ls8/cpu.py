@@ -89,3 +89,12 @@ class CPU:
             elif ir = HLT:
                 self.running == False
                 self.pc += 1
+            # print numeric value stored in given register
+            elif ir == PRN:
+                operand_a = self.ram_read(self.pc + 1)
+                print(operand_a)
+                self.pc += 2
+            # error
+            else:
+                print(f'Cannot run')
+                running = False
