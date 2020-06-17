@@ -19,6 +19,8 @@ class CPU:
         self.register = [0] * 8
         self.pc = 0
         self.running = True
+        self.sp = 7
+        self.register[self.sp] = 0xF4
         self.branch_table = {
             LDI: self.LDI,
             HLT: self.HLT,
@@ -97,12 +99,22 @@ class CPU:
 
     def PUSH(self):
         # decrement SP
-        self.register[SP] -= 1
+        self.register[self.sp] -= 1
         # get value from register
-        pass
+        reg_num = self.ram_read(self.pc + 1)
+        value = self.register[reg_num]
+
+        self.ram_write(self.register[self.sp], value)
+
+        self.pc += 2
 
     def POP(self):
-        pass
+        reg_num = self.ram_read(self.pc + 1)
+        value = self.ram_read(self.register[self.sp])
+
+        self.register[reg_num] = value
+        self.register[self.sp] += 1
+        self.pc += 2
 
     def alu(self, op, reg_a, reg_b):
         """ALU operations."""
