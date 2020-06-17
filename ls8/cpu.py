@@ -25,7 +25,6 @@ class CPU:
 
     def load(self):
         """Load a program into memory."""
-        # address = 0
 
         program = [0] * 256
 
@@ -44,11 +43,14 @@ class CPU:
         #         self.ram[address] = instruction
         with open(f'examples/{filename}') as f:
             address = 0
+
             for line in f:
                 line = line.split("#")
                 line = line[0].strip()
+
                 if line == "":
                     continue
+                
                 value = int(line, 2)
                 self.ram_write(address, value)
                 address += 1
@@ -72,13 +74,13 @@ class CPU:
 
     def PRN(self):
         operand_a = self.ram_read(self.pc + 1)
-        print(self.ram_read(operand_a))
+        print(self.register[operand_a])
         self.pc += 2
 
     def MUL(self):
-        reg_a = self.ram_read(self.pc + 1)
-        reg_b = self.ram_read(self.pc + 2)
-        self.alu('MUL', reg_a, reg_b)
+        operand_a = self.ram_read(self.pc + 1)
+        operand_b = self.ram_read(self.pc + 2)
+        self.alu('MUL', operand_a, operand_b)
         self.pc += 3
 
     def alu(self, op, reg_a, reg_b):
@@ -89,7 +91,7 @@ class CPU:
         elif op == "SUB":
             self.register[reg_a] -+ self.register[reg_b]
         elif op == 'MUL':
-            self.register[reg_a] += self.register[reg_b]
+            self.register[reg_a] *= self.register[reg_b]
         else:
             raise Exception("Unsupported ALU operation")
 
@@ -118,7 +120,4 @@ class CPU:
         while self.running:
             # read memory address stored in register PC and store as ir
             ir = self.ram_read(self.pc)
-            # print(ir)
-            for key in self.branch_table:
-                print(f'{key:b}')
             self.branch_table[ir]()
