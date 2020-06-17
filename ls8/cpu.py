@@ -5,7 +5,10 @@ import sys
 LDI = 0b10000010
 HLT = 0b00000001
 PRN = 0b01000111
+ADD = 0b10101000
 MUL = 0b10100010
+PUSH = 0b01000101
+POP = 0b01000110
 
 class CPU:
     """Main CPU class."""
@@ -20,7 +23,10 @@ class CPU:
             LDI: self.LDI,
             HLT: self.HLT,
             PRN: self.PRN,
-            MUL: self.MUL
+            ADD: self.ADD,
+            MUL: self.MUL,
+            PUSH: self.PUSH,
+            POP: self.POP
         }
 
     def load(self):
@@ -77,11 +83,26 @@ class CPU:
         print(self.register[operand_a])
         self.pc += 2
 
+    def ADD(self):
+        operand_a = self.ram_read(self.pc + 1)
+        operand_b = self.ram_read(self.pc + 2)
+        self.alu('ADD', operand_a, operand_b)
+        self.pc += 3
+
     def MUL(self):
         operand_a = self.ram_read(self.pc + 1)
         operand_b = self.ram_read(self.pc + 2)
         self.alu('MUL', operand_a, operand_b)
         self.pc += 3
+
+    def PUSH(self):
+        # decrement SP
+        self.register[SP] -= 1
+        # get value from register
+        pass
+
+    def POP(self):
+        pass
 
     def alu(self, op, reg_a, reg_b):
         """ALU operations."""
