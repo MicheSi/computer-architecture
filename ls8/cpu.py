@@ -113,10 +113,20 @@ class CPU:
         self.pc += 2
 
     def CALL(self):
-        pass
+        rtn_addr = self.pc + 2 # address we're going to RET
+
+        # push on to stack
+        self.register[self.sp] -= 1
+        self.ram_write(self.register[self.sp], rtn_addr)
+
+        reg_num = self.ram_read(self.pc + 1)
+        sub_addr = self.register[reg_num]
+
+        self.pc = sub_addr
 
     def RET(self):
-        pass
+        self.pc = self.ram_read(self.register[self.sp])
+        self.register[self.sp] += 1
 
     def alu(self, op, reg_a, reg_b):
         """ALU operations."""
