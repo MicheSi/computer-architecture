@@ -5,7 +5,7 @@ import sys
 LDI = 0b10000010
 HLT = 0b00000001
 PRN = 0b01000111
-ADD = 0b10101000
+ADD = 0b10100000
 MUL = 0b10100010
 PUSH = 0b01000101
 POP = 0b01000110
@@ -118,10 +118,10 @@ class CPU:
         # push on to stack
         self.register[self.sp] -= 1
         self.ram_write(self.register[self.sp], rtn_addr)
-
+        # get address to call
         reg_num = self.ram_read(self.pc + 1)
         sub_addr = self.register[reg_num]
-
+        # call address
         self.pc = sub_addr
 
     def RET(self):
@@ -165,4 +165,5 @@ class CPU:
         while self.running:
             # read memory address stored in register PC and store as ir
             ir = self.ram_read(self.pc)
+            # print(ir)
             self.branch_table[ir]()
