@@ -9,6 +9,8 @@ ADD = 0b10101000
 MUL = 0b10100010
 PUSH = 0b01000101
 POP = 0b01000110
+CALL = 0b01010000
+RET = 0b00010001
 
 class CPU:
     """Main CPU class."""
@@ -28,7 +30,9 @@ class CPU:
             ADD: self.ADD,
             MUL: self.MUL,
             PUSH: self.PUSH,
-            POP: self.POP
+            POP: self.POP,
+            CALL: self.CALL,
+            RET: self.RET
         }
 
     def load(self):
@@ -38,17 +42,6 @@ class CPU:
 
         filename = sys.argv[1]
 
-        # with open(filename) as f:
-        #     for address, line in enumerate(f):
-
-        #         line = line.split('#')
-
-        #         try:
-        #             instruction = int(line[0], 2)
-        #         except ValueError:
-        #             continue
-
-        #         self.ram[address] = instruction
         with open(f'examples/{filename}') as f:
             address = 0
 
@@ -103,18 +96,27 @@ class CPU:
         # get value from register
         reg_num = self.ram_read(self.pc + 1)
         value = self.register[reg_num]
-
+        # store value in register
         self.ram_write(self.register[self.sp], value)
 
         self.pc += 2
 
     def POP(self):
+        # get value from register
         reg_num = self.ram_read(self.pc + 1)
         value = self.ram_read(self.register[self.sp])
-
+        # remove that value
         self.register[reg_num] = value
+        # increment SP
         self.register[self.sp] += 1
+
         self.pc += 2
+
+    def CALL(self):
+        pass
+
+    def RET(self):
+        pass
 
     def alu(self, op, reg_a, reg_b):
         """ALU operations."""
