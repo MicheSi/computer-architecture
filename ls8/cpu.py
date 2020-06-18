@@ -6,6 +6,7 @@ LDI = 0b10000010
 HLT = 0b00000001
 PRN = 0b01000111
 ADD = 0b10100000
+SUB = 0b10100001
 MUL = 0b10100010
 PUSH = 0b01000101
 POP = 0b01000110
@@ -28,6 +29,7 @@ class CPU:
             HLT: self.HLT,
             PRN: self.PRN,
             ADD: self.ADD,
+            SUB: self.SUB,
             MUL: self.MUL,
             PUSH: self.PUSH,
             POP: self.POP,
@@ -82,6 +84,12 @@ class CPU:
         operand_a = self.ram_read(self.pc + 1)
         operand_b = self.ram_read(self.pc + 2)
         self.alu('ADD', operand_a, operand_b)
+        self.pc += 3
+
+    def SUB(self):
+        operand_a = self.ram_read(self.pc + 1)
+        operand_b = self.ram_read(self.pc + 2)
+        self.alu('SUB', operand_a, operand_b)
         self.pc += 3
 
     def MUL(self):
