@@ -159,12 +159,14 @@ class CPU:
         self.pc = sub_addr
 
     def JEQ(self):
+        # if flag is true(1), jump to address
         if self.flag == 1:
             self.JMP()
         else:
             self.pc += 2
 
     def JNE(self):
+        # if flag is false(0), jump to address
         if self.flag == 0:
             self.JMP()
         else:
