@@ -107,6 +107,12 @@ class CPU:
         self.alu('MUL', operand_a, operand_b)
         self.pc += 3
 
+    def CMP(self):
+        operand_a = self.ram_read(self.pc + 1)
+        operand_b = self.ram_read(self.pc + 2)
+        self.alu('CMP', operand_a, operand_b)
+        self.pc += 3
+
     def PUSH(self):
         # decrement SP
         self.register[self.sp] -= 1
@@ -153,10 +159,16 @@ class CPU:
         self.pc = sub_addr
 
     def JEQ(self):
-        pass
+        if self.flag == 1:
+            self.JMP()
+        else:
+            self.pc += 2
 
     def JNE(self):
-        pass
+        if self.flad == 0:
+            self.JMP()
+        else:
+            self.pc += 2
 
     def alu(self, op, reg_a, reg_b):
         """ALU operations."""
