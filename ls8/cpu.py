@@ -165,7 +165,7 @@ class CPU:
             self.pc += 2
 
     def JNE(self):
-        if self.flad == 0:
+        if self.flag == 0:
             self.JMP()
         else:
             self.pc += 2
