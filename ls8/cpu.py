@@ -25,6 +25,7 @@ class CPU:
         self.ram = [0] * 256
         self.register = [0] * 8
         self.pc = 0
+        self.flag = 0
         self.running = True
         self.sp = 7
         self.register[self.sp] = 0xF4
@@ -153,6 +154,13 @@ class CPU:
             self.register[reg_a] -+ self.register[reg_b]
         elif op == 'MUL':
             self.register[reg_a] *= self.register[reg_b]
+        elif op == 'CMP':
+            if self.register[reg_a] == self.register[reg_b]:
+                self.flag = 1
+            elif self.register[reg_a] < self.register[reg_b]:
+                self.flag = 0
+            elif self.register[reg_a] > self.register[reg_b]:
+                self.flag = 0
         else:
             raise Exception("Unsupported ALU operation")
 
