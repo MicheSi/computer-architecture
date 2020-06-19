@@ -145,6 +145,19 @@ class CPU:
         self.pc = self.ram_read(self.register[self.sp])
         self.register[self.sp] += 1
 
+    def JMP(self):
+        # get address to call
+        reg_num = self.ram_read(self.pc + 1)
+        sub_addr = self.register[reg_num]
+        # set pc to address
+        self.pc = sub_addr
+
+    def JEQ(self):
+        pass
+
+    def JNE(self):
+        pass
+
     def alu(self, op, reg_a, reg_b):
         """ALU operations."""
 
